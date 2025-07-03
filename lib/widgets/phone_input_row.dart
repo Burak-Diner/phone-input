@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 
-final List<CountryCode> countriesList =
+/// Converted list of [CountryCode] objects from the package's raw data.
+final List<CountryCode> countryCodes =
     codes.map((c) => CountryCode.fromJson(c)).toList();
 
 class PhoneInputRow extends StatelessWidget {
@@ -34,15 +35,18 @@ class PhoneInputRow extends StatelessWidget {
         children: [
           //bayrak kısmı
           DropdownButtonHideUnderline(
-            child: DropdownButton<CountryCode>(
-              value: selectedCountry,
+            child: DropdownButton<String>(
+              value: selectedCountry.dialCode,
               icon: const Icon(Icons.keyboard_arrow_down),
-              onChanged: (CountryCode? c) {
-                if (c != null) onCountryChanged(c);
+              onChanged: (String? dial) {
+                if (dial != null) {
+                  onCountryChanged(CountryCode.fromDialCode(dial));
+                }
               },
-              items: countriesList.map((c) {
-                return DropdownMenuItem(
-                  value: c,
+              items: countryCodes.map((c) {
+                return DropdownMenuItem<String>(
+                  value: c.dialCode,
+
                   child: Row(
                     children: [
                       CircleAvatar(
