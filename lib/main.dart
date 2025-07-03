@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/countries.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'models/login_phone_model.dart';
 import 'widgets/phone_input_row.dart';
 import 'theme/theme.dart';
@@ -34,12 +34,11 @@ class _PhoneInputPageState extends State<PhoneInputPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: PhoneInputRow(
-          selectedCountry: countries.firstWhere(
-            (c) => c.code == model.countryCode,
-            orElse: () => countries.firstWhere((c) => c.code == 'TR'),
-          ),
+          selectedCountry:
+              CountryCode.tryFromCountryCode(model.countryCode) ??
+                  CountryCode.fromCountryCode('TR'),
           onCountryChanged: (country) {
-            setState(() => model.countryCode = country.code);
+            setState(() => model.countryCode = country.code ?? '');
           },
           phone: model.phoneNumber,
           onPhoneChanged: (value) {
