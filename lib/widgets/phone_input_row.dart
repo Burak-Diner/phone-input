@@ -34,15 +34,17 @@ class PhoneInputRow extends StatelessWidget {
         children: [
           //bayrak kısmı
           DropdownButtonHideUnderline(
-            child: DropdownButton<CountryCode>(
-              value: selectedCountry,
+            child: DropdownButton<String>(
+              value: selectedCountry.dialCode,
               icon: const Icon(Icons.keyboard_arrow_down),
-              onChanged: (CountryCode? c) {
-                if (c != null) onCountryChanged(c);
+              onChanged: (String? dial) {
+                if (dial != null) {
+                  onCountryChanged(CountryCode.fromDialCode(dial));
+                }
               },
               items: countriesList.map((c) {
-                return DropdownMenuItem(
-                  value: c,
+                return DropdownMenuItem<String>(
+                  value: c.dialCode,
                   child: Row(
                     children: [
                       CircleAvatar(
