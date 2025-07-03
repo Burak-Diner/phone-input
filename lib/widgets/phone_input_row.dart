@@ -46,6 +46,7 @@ class PhoneInputRow extends StatelessWidget {
               items: countryCodes.map((c) {
                 return DropdownMenuItem<String>(
                   value: c.dialCode,
+
                   child: Row(
                     children: [
                       CircleAvatar(
