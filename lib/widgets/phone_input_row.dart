@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/countries.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+
+/// Converted list of [CountryCode] objects from the package's raw data.
+final List<CountryCode> countryCodes =
+    codes.map((c) => CountryCode.fromJson(c)).toList();
 
 class PhoneInputRow extends StatelessWidget {
-  final Country selectedCountry;
-  final ValueChanged<Country> onCountryChanged;
+  final CountryCode selectedCountry;
+  final ValueChanged<CountryCode> onCountryChanged;
   final String phone;
   final ValueChanged<String> onPhoneChanged;
 
@@ -31,26 +35,28 @@ class PhoneInputRow extends StatelessWidget {
         children: [
           //bayrak kısmı
           DropdownButtonHideUnderline(
-            child: DropdownButton<Country>(
-              value: selectedCountry,
+            child: DropdownButton<String>(
+              value: selectedCountry.dialCode,
               icon: const Icon(Icons.keyboard_arrow_down),
-              onChanged: (Country? c) {
-                if (c != null) onCountryChanged(c);
+              onChanged: (String? dial) {
+                if (dial != null) {
+                  onCountryChanged(CountryCode.fromDialCode(dial));
+                }
               },
-              items: countries.map((c) {
-                return DropdownMenuItem(
-                  value: c,
+              items: countryCodes.map((c) {
+                return DropdownMenuItem<String>(
+                  value: c.dialCode,
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 12,
                         backgroundImage: AssetImage(
-                          'packages/intl_phone_field/assets/flags/${c.code.toLowerCase()}.png',
+                          'packages/country_code_picker/${c.flagUri}',
                         ),
                         backgroundColor: Colors.transparent,
                       ),
                       const SizedBox(width: 6),
-                      Text(c.dialCode),
+                      Text(c.dialCode ?? ''),
                     ],
                   ),
                 );
