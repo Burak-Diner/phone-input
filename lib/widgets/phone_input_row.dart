@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/countries.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+
+final List<CountryCode> countriesList =
+    codes.map((c) => CountryCode.fromJson(c)).toList();
 
 class PhoneInputRow extends StatelessWidget {
-  final Country selectedCountry;
-  final ValueChanged<Country> onCountryChanged;
+  final CountryCode selectedCountry;
+  final ValueChanged<CountryCode> onCountryChanged;
   final String phone;
   final ValueChanged<String> onPhoneChanged;
 
@@ -31,13 +34,13 @@ class PhoneInputRow extends StatelessWidget {
         children: [
           //bayrak kısmı
           DropdownButtonHideUnderline(
-            child: DropdownButton<Country>(
+            child: DropdownButton<CountryCode>(
               value: selectedCountry,
               icon: const Icon(Icons.keyboard_arrow_down),
-              onChanged: (Country? c) {
+              onChanged: (CountryCode? c) {
                 if (c != null) onCountryChanged(c);
               },
-              items: countries.map((c) {
+              items: countriesList.map((c) {
                 return DropdownMenuItem(
                   value: c,
                   child: Row(
@@ -45,12 +48,12 @@ class PhoneInputRow extends StatelessWidget {
                       CircleAvatar(
                         radius: 12,
                         backgroundImage: AssetImage(
-                          'packages/intl_phone_field/assets/flags/${c.code.toLowerCase()}.png',
+                          'packages/country_code_picker/${c.flagUri}',
                         ),
                         backgroundColor: Colors.transparent,
                       ),
                       const SizedBox(width: 6),
-                      Text(c.dialCode),
+                      Text(c.dialCode ?? ''),
                     ],
                   ),
                 );
